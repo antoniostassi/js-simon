@@ -14,16 +14,16 @@ function getRandomInt(max) { // Funzione per generare numeri random
     return Math.floor(Math.random() * max);
 }
 
-for (let k=0;k < 5;k++) {
-    let generatedNumber = getRandomInt(100);
-    divToMemorize.innerHTML += "<p style='margin:15px 5px;'><strong>" + generatedNumber + "</strong></p>";
-    randomNumbers.push(generatedNumber); // Salvo in un array i numeri da memorizzare
-}
 
-console.log(randomNumbers);
 
 startButton.addEventListener("click", function() {
     if(!clicked) { // Se non è già stato cliccato
+        for (let k=0;k < 5;k++) {
+            let generatedNumber = getRandomInt(100);
+            divToMemorize.innerHTML += "<p style='margin:15px 5px;'><strong>" + generatedNumber + "</strong></p>";
+            randomNumbers.push(generatedNumber); // Salvo in un array i numeri da memorizzare
+        }
+        console.log(randomNumbers);
         memorizingInterval = setInterval(askNumbers, 1000); // Intervallo da ripetere ad ogni secondo
         clicked = !clicked;
     }
@@ -43,7 +43,7 @@ function askNumbers(){
         clearInterval(memorizingInterval); // Fermo il Timer, questa sarà l'ultima esecuzione della funzione.
         memorizingInterval = null;  // Cancello il Timer.
 
-        timerTag.innerHTML = "<p><strong>"+ 0 +"</p></strong>";
+            timerTag.innerHTML = "<p></strong>Numeri indovinati: </strong></p>";
         divToMemorize.innerHTML = ""; // Nascondi i numeri
 
         setTimeout(function(){
@@ -53,20 +53,21 @@ function askNumbers(){
             }
 
             console.log(userNumbers); // Stampo l'array contenente gli input dell'utente.
-
             for (let k=0; k < userNumbers.length; k++) { 
                 if (!randomNumbers.includes(userNumbers[k])) { // Se almeno un numero non è contenuto nell'array dei numeri da ricordare
-                    alert("Hai perso!"); // Allora hai perso
                     gameOver = true; // gameOver status == true;
-                    break; // Ferma il ciclo
+                } else {
+                    timerTag.innerHTML += userNumbers[k] + " ";
                 }
             }
 
             if(gameOver == false) { // Se non hai perso, gameOver è ancora = false, dunque
                 alert("Hai vinto!"); // Hai Vinto
+            } else {
+                alert("Hai perso");
             }
 
-            location.reload();
+            // location.reload();
 
         }, 100);
 
