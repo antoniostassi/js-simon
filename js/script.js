@@ -1,25 +1,29 @@
 const startButton = document.querySelector("button");
+const divToMemorize = document.getElementById("numbersToMemorize");
+const timerTag = document.getElementById("timer");
 const randomNumbers = [];
 const userNumbers = [];
 let gameOver = false;
 let clicked = false;
 
 let memorizingInterval;
-let countdownNumber = 5;
+let countdownNumber = 4;
+
 
 function getRandomInt(max) { // Funzione per generare numeri random
     return Math.floor(Math.random() * max);
 }
 
 for (let k=0;k < 5;k++) {
-    randomNumbers.push(getRandomInt(100)); // Salvo in un array i numeri da memorizzare
-
+    let generatedNumber = getRandomInt(100);
+    divToMemorize.innerHTML += "<p style='margin:15px 5px;'><strong>" + generatedNumber + "</strong></p>";
+    randomNumbers.push(generatedNumber); // Salvo in un array i numeri da memorizzare
 }
 
 console.log(randomNumbers);
 
 startButton.addEventListener("click", function() {
-    if(!clicked) {
+    if(!clicked) { // Se non è già stato cliccato
         memorizingInterval = setInterval(askNumbers, 1000); // Intervallo da ripetere ad ogni secondo
         clicked = !clicked;
     }
@@ -30,6 +34,7 @@ function askNumbers(){
     
     if (countdownNumber > 0) {
 
+        timerTag.innerHTML = "<strong>"+ countdownNumber +"</strong>";
         console.log(countdownNumber);
         countdownNumber--;
 
@@ -37,10 +42,12 @@ function askNumbers(){
         // Sono finiti i 5 secondi;
         clearInterval(memorizingInterval); // Fermo il Timer, questa sarà l'ultima esecuzione della funzione.
         memorizingInterval = null;  // Cancello il Timer.
-        for (let k=0; k < 5; k++) {
-            let userNum = parseInt(prompt((k+1) + " - Indovina un numero:")); // Chiedo gli input all'utente.
-            userNumbers.push(userNum); // Salvo tutti gli input dell'utente.
-        }
+
+        timerTag.innerHTML = "<p><strong>"+ 0 +"</p></strong>";
+        divToMemorize.innerHTML = ""; // Nascondi i numeri
+        htmlIsRemoved = true;   
+        setTimeout(askForPrompt(), 1000);
+
         console.log(userNumbers); // Stampo l'array contenente gli input dell'utente.
 
         for (let k=0; k < userNumbers.length; k++) { 
@@ -54,5 +61,14 @@ function askNumbers(){
         if(gameOver == false) { // Se non hai perso, gameOver è ancora = false, dunque
             alert("Hai vinto!"); // Hai Vinto
         }
+
+        location.reload();
+    }
+}
+
+function askForPrompt() {
+    for (let k=0; k < 5; k++) {
+        let userNum = parseInt(prompt((k+1) + " - Indovina un numero:")); // Chiedo gli input all'utente.
+        userNumbers.push(userNum); // Salvo tutti gli input dell'utente.
     }
 }
