@@ -1,8 +1,10 @@
-
+const startButton = document.querySelector("button");
 const randomNumbers = [];
 const userNumbers = [];
 let gameOver = false;
+let clicked = false;
 
+let memorizingInterval;
 let countdownNumber = 5;
 
 function getRandomInt(max) { // Funzione per generare numeri random
@@ -11,11 +13,17 @@ function getRandomInt(max) { // Funzione per generare numeri random
 
 for (let k=0;k < 5;k++) {
     randomNumbers.push(getRandomInt(100)); // Salvo in un array i numeri da memorizzare
+
 }
 
 console.log(randomNumbers);
 
-let memorizingInterval = setInterval(askNumbers, 1000); // Intervallo da ripetere ad ogni secondo
+startButton.addEventListener("click", function() {
+    if(!clicked) {
+        memorizingInterval = setInterval(askNumbers, 1000); // Intervallo da ripetere ad ogni secondo
+        clicked = !clicked;
+    }
+});
 
 
 function askNumbers(){
